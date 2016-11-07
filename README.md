@@ -33,23 +33,28 @@ Pattern timeMatcher = Pattern.compile(
 ```
 
 ####Explanation of Intent
-```swift
-private static func placeholderTextForType(type: PlaceholderViewType) -> String {
-	switch type {
-	case .Booking:
-		return "You don't have any booking.\nSearch for a place to stay and make a booking right now!".localized()
-	case .Favorite:
-		return "No favorites yet. Search the property section and tag your favorites.".localized()
+```java
+public void testConcurrentAddWidgets() throws Exception {
+
+	WidgetBuilder widgetBuilder =
+		new WidgetBuilder(new Class[]{BoldWidget.class});
+	String text = "'''bold text'''";
+	ParentWidget parent =
+		new BoldWidget(new MockWidgetRoot(), "'''bold text'''");
+	AtomicBoolean failFlag = new AtomicBoolean();
+	failFlag.set(false);
+	
+	//This is our best attempt to get a race condition
+	//by creating large number of threads.
+	for (int i = 0; i < 25000; i++) {
+		WidgetBuilderThread widgetBuilderThread =
+		new WidgetBuilderThread(widgetBuilder, text, parent, failFlag);
+		Thread thread = new Thread(widgetBuilderThread);
+		thread.start();
 	}
+	
+	assertEquals(false, failFlag.get());
 }
-	
-/**
-Factory method to create `PlaceholderViewWithSearchButton` view with custom description text based on it's type
-	
-- parameter type: PlaceholderViewType
-	
-- returns: PlaceholderViewWithSearchButton
-*/
 ```
  
 ####Clarification
